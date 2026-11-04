@@ -1,0 +1,19 @@
+{
+  "name": "microservicio-bd",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Scripts SQL de dbgestor (MariaDB) con lint, pruebas sobre BD temporal y análisis de calidad",
+  "scripts": {
+    "lint:sql": "node bin/lint-sql.js",
+    "test": "jest",
+    "test:ci": "jest --ci --coverage --runInBand"
+  },
+  "dependencies": {
+    "mariadb": "3.5.4",
+    "node-sql-parser": "5.4.0"
+  },
+  "devDependencies": {
+    "bcryptjs": "3.0.3",
+    "jest": "30.5.2"
+  }
+}
