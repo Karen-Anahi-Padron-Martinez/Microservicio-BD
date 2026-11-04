@@ -4,6 +4,8 @@ pipeline {
 
     options {
         timestamps()
+        // Un solo checkout (etapa Checkout) en lugar de dos, con reintentos ante fallos de red
+        skipDefaultCheckout()
         timeout(time: 30, unit: 'MINUTES')
         buildDiscarder(logRotator(numToKeepStr: '15'))
     }
@@ -18,7 +20,9 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                checkout scm
+                retry(3) {
+                    checkout scm
+                }
             }
         }
 
