@@ -7,10 +7,12 @@
 
 SET NAMES utf8mb4;
 
+-- Semgrep (detected-bcrypt-hash): falso positivo. Son hashes BCrypt de la contraseña demo documentada en README
+-- para cuentas ficticias @example.com; no dan acceso a ningún sistema real. Se suprimen con nosemgrep.
 INSERT INTO usuario (id_usuario, nombre, correo_electronico, contrasena, rol, imagen_usuario) VALUES
-  (131, 'Usuario Demo Uno', 'demo1@example.com', '$2a$10$ZmWSoT8jH50GDu/1xFqo3eVV/nFrpvtlzUY2pdCnYbhaSrD0EuRMu', 'Estudiante', '#70FAB7'),
-  (172, 'Usuario Demo Dos', 'demo2@example.com', '$2a$10$S3DxlJbRIbmP6CbZxK5lM.lB6Rgd2.AC4XvWmEdjf8TIZtfdqLoDK', 'Estudiante', '#54EA01'),
-  (196, 'Usuario Demo Tres', 'demo3@example.com', '$2a$10$l3dA/JrM4JOpsMq0DfUBLe4DpEw4/UqU5dL/mIDG.r.qs4JHmLF8K', 'Estudiante', '#805611');
+  (131, 'Usuario Demo Uno', 'demo1@example.com', '$2a$10$ZmWSoT8jH50GDu/1xFqo3eVV/nFrpvtlzUY2pdCnYbhaSrD0EuRMu', 'Estudiante', '#70FAB7'), -- nosemgrep: detected-bcrypt-hash
+  (172, 'Usuario Demo Dos', 'demo2@example.com', '$2a$10$S3DxlJbRIbmP6CbZxK5lM.lB6Rgd2.AC4XvWmEdjf8TIZtfdqLoDK', 'Estudiante', '#54EA01'), -- nosemgrep: detected-bcrypt-hash
+  (196, 'Usuario Demo Tres', 'demo3@example.com', '$2a$10$l3dA/JrM4JOpsMq0DfUBLe4DpEw4/UqU5dL/mIDG.r.qs4JHmLF8K', 'Estudiante', '#805611'); -- nosemgrep: detected-bcrypt-hash
 
 INSERT INTO proyectos (id_proyecto, nombre, descripcion, fecha_inicio, fecha_finalizacion, estado_proyecto, fondo) VALUES
   (197, 'My API Rest', 'Desarrollarán un API Rest que satisfaga un sistema de información con al menos 5 tablas.', '2024-05-31', '2024-06-29', 'En proceso', '/Images/animacion1.gif');
