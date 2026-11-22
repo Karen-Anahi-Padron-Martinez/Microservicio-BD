@@ -1,4 +1,4 @@
-// Pipeline de BASE DE DATOS: lint SQL -> pruebas sobre BD temporal -> SonarQube -> Quality Gate
+// Pipeline de BASE DE DATOS: lint SQL -> pruebas sobre BD temporal -> SAST (Semgrep) -> SonarQube -> Quality Gate
 pipeline {
     agent any
 
@@ -23,6 +23,8 @@ pipeline {
                 retry(3) {
                     checkout scm
                 }
+                // Scripts de CI (Infraestructura-IaC) fuera del workspace analizado
+                dir("${env.WORKSPACE}@iac") { git url: 'https://github.com/Karen-Anahi-Padron-Martinez/Infraestructura-IaC.git', branch: 'main' }
             }
         }
 
@@ -56,6 +58,18 @@ pipeline {
                 always {
                     // Reporte HTML de cobertura de la capa Node (coverage/lcov-report/index.html)
                     archiveArtifacts artifacts: 'coverage/**', allowEmptyArchive: true
+                }
+            }
+        }
+
+        stage('SAST (Semgrep)') {
+            steps {
+                // Falla solo con hallazgos ERROR; WARNING/INFO quedan en el reporte
+                sh 'bash "$WORKSPACE@iac/ci/semgrep.sh" . p/javascript p/owasp-top-ten p/secrets'
+            }
+            post {
+                always {
+                    archiveArtifacts artifacts: 'semgrep.json, semgrep.sarif', allowEmptyArchive: true
                 }
             }
         }
