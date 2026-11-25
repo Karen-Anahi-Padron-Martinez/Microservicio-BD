@@ -17,6 +17,11 @@ pipeline {
         REQUIERE_BD = '1'
     }
 
+    triggers {
+        // CI: Jenkins revisa GitHub cada 5 minutos y construye solo si hay commits nuevos en este repo
+        pollSCM('H/5 * * * *')
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -24,7 +29,7 @@ pipeline {
                     checkout scm
                 }
                 // Scripts de CI (Infraestructura-IaC) fuera del workspace analizado
-                dir("${env.WORKSPACE}@iac") { git url: 'https://github.com/Karen-Anahi-Padron-Martinez/Infraestructura-IaC.git', branch: 'main' }
+                dir("${env.WORKSPACE}@iac") { git url: 'https://github.com/Karen-Anahi-Padron-Martinez/Infraestructura-IaC.git', branch: 'main', poll: false, changelog: false }
             }
         }
 
