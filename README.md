@@ -12,7 +12,7 @@ Scripts de base de datos del Gestor de Proyectos. Lo consumen **Microservicio1**
 | `src/lint.js`, `bin/lint-sql.js` | Lint SQL: sintaxis MariaDB y reglas del proyecto |
 | `src/validaciones.js` | Validaciones de esquema y datos que se ejecutan contra la BD |
 | `test/` | Pruebas Jest: unitarias (sin BD) e integración (BD temporal real) |
-| `Jenkinsfile` | Pipeline: lint → pruebas sobre BD temporal → SonarQube → Quality Gate |
+| `Jenkinsfile` | Pipeline: lint → pruebas sobre BD temporal → SAST (Semgrep) → SonarQube → Quality Gate. Corre en Jenkins en Azure (VM de CI) y se dispara solo con cada push (pollSCM cada 5 min) |
 
 ## Cambios respecto al dump original (`dump-dbgestor-202406261453.sql`)
 
